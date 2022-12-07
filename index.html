@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+     <!-- GUI -->
+    Type of animal<input id="typename">
+    specie<input id="specie">
+    amount in the zoo<input id="amount">
+    <button onclick="addData()">Add data</button>
+    <div id="display"></div>
+    <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+    <script>
+        
+        const MY_SERVER ="https://t-haku.onrender.com/animals" //flask
+        // const MY_SERVER ="https://jsonplaceholder.typicode.com/users/" //json place holder
+        // const MY_SERVER = "http://localhost:3000/students/" // fake json server
+        // const MY_SERVER ="http://localhost:5000/students" //my flask python
+
+        const loadData = async () => {
+            // get (READ)
+            const res = await axios.get(MY_SERVER) //get data from server
+            display.innerHTML = res.data.map(anim => `
+            <h1>
+            <button onclick='updAnimal(${anim.id})'>upddd</button>
+            <button onclick='delAnimal(${anim.id})'>${anim.id}</button>
+            typename:${anim.typename}, specie: ${anim.specie}, amount: ${anim.amount}, id:${anim.id}</h1><hr>`).join("") //build display
+            console.log(res.data) //display date  in console
+        }
+
+        loadData()
+
+        // post (Create)
+        const addData = async () => {
+            await axios.post(MY_SERVER, {typename: typename.value, specie: specie.value, amount: amount.value }).then((res) => console.log(res.data))
+        }
+
+        //delete (delete)
+        const delAnimal = (id) => {
+            console.log(id)
+            axios.delete(MY_SERVER + "/" + id).then((res) => console.log(res.data))
+        }
+
+        const updAnimal =async (id) => {
+            // put (update)
+            const res=await axios.put(MY_SERVER + "/" + id,{typename: typename.value, specie: specie.value, amount: amount.value })
+            console.log(res)
+            loadData()
+        }
+    </script>
+</body>
+</html>
