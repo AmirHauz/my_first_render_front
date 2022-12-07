@@ -39,21 +39,21 @@
         // post (Create)
         const addData = async () => {
             await axios.post(MY_SERVER, {typename: typename.value, specie: specie.value, amount: amount.value }).then((res) => console.log(res.data))
-            loadData()
+            location.reload()
         }
 
         //delete (delete)
         const delAnimal = (id) => {
             console.log(id)
             axios.delete(MY_SERVER + "/" + id).then((res) => console.log(res.data))
-            loadData()
+            location.reload()
         }
 
         const updAnimal =async (id) => {
             // put (update)
             const res=await axios.put(MY_SERVER + "/" + id,{typename: typename.value, specie: specie.value, amount: amount.value })
             console.log(res)
-            loadData()
+            location.reload()
         }
     </script>
 </body>
